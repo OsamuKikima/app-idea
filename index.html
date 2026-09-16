@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アイデア畑 | ビジネス開発論</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF6EC;
+    --surface: #FFFFFF;
+    --surface-soft: #F1EDE0;
+    --primary: #4C7A52;
+    --primary-dark: #365A3B;
+    --primary-light: #E7F0E2;
+    --accent: #E3982F;
+    --accent-light: #FBEBD2;
+    --text: #2E2A22;
+    --text-muted: #766F5F;
+    --border: #E1D9C4;
+    --danger: #B8543F;
+    --danger-light: #F7E4DE;
+    --shadow: 0 2px 10px rgba(76, 61, 30, 0.08);
+    --radius: 18px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1D211B;
+      --surface: #262B22;
+      --surface-soft: #2F352A;
+      --primary: #8DBE8F;
+      --primary-dark: #B7DBB4;
+      --primary-light: #33402E;
+      --accent: #EFB25F;
+      --accent-light: #40331F;
+      --text: #EDE9DC;
+      --text-muted: #A6A08D;
+      --border: #3B4136;
+      --danger: #E08A75;
+      --danger-light: #402823;
+      --shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #1D211B;
+    --surface: #262B22;
+    --surface-soft: #2F352A;
+    --primary: #8DBE8F;
+    --primary-dark: #B7DBB4;
+    --primary-light: #33402E;
+    --accent: #EFB25F;
+    --accent-light: #40331F;
+    --text: #EDE9DC;
+    --text-muted: #A6A08D;
+    --border: #3B4136;
+    --danger: #E08A75;
+    --danger-light: #402823;
+    --shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    line-height: 1.65;
+    padding-bottom: 48px;
+  }
+
+  h1, h2, h3, .brand {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    text-wrap: balance;
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  header.top {
+    padding: 36px 20px 28px;
+    background:
+      radial-gradient(circle at 12% 20%, var(--primary-light) 0%, transparent 45%),
+      radial-gradient(circle at 88% 0%, var(--accent-light) 0%, transparent 40%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--primary-dark);
+    margin: 0;
+  }
+
+  .brand .sprout { font-size: 1.7rem; }
+
+  .subtitle {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+
+  main { padding-top: 28px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px;
+  }
+
+  .section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin: 0 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-desc {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin: 0 0 18px;
+  }
+
+  /* ---- roster ---- */
+
+  .roster-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .roster-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    cursor: pointer;
+    transition: border-color .15s ease, transform .15s ease;
+    text-align: left;
+    width: 100%;
+    font: inherit;
+    color: inherit;
+  }
+
+  .roster-row:hover { border-color: var(--primary); transform: translateY(-1px); }
+  .roster-row:active { transform: translateY(0); }
+
+  .roster-id {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    min-width: 74px;
+  }
+
+  .roster-name {
+    flex: 1;
+    font-weight: 500;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dots { display: flex; gap: 4px; flex-shrink: 0; }
+
+  .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--border);
+  }
+  .dot.filled { background: var(--primary); }
+
+  .badge-complete {
+    flex-shrink: 0;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .count-label {
+    flex-shrink: 0;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    min-width: 32px;
+    text-align: right;
+  }
+
+  /* ---- summary bar ---- */
+
+  .summary-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--primary-light);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    font-size: 0.85rem;
+    color: var(--primary-dark);
+    font-weight: 500;
+  }
+
+  .summary-bar strong { font-variant-numeric: tabular-nums; font-size: 1rem; }
+
+  /* ---- buttons ---- */
+
+  button {
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: filter .15s ease, transform .15s ease;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover:not(:disabled) { filter: brightness(1.05); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--primary-dark);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { border-color: var(--primary); }
+
+  .btn-text {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding: 6px 4px;
+    text-decoration: underline;
+  }
+
+  .btn-danger {
+    background: none;
+    border: none;
+    color: var(--danger);
+    font-size: 0.82rem;
+    padding: 4px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+
+  /* ---- student screen ---- */
+
+  .student-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .student-head .name { font-size: 1.25rem; font-weight: 700; }
+  .student-head .id { font-size: 0.8rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+  .complete-banner {
+    margin: 18px 0;
+    padding: 16px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent-light), var(--primary-light));
+    border: 1px solid var(--border);
+    text-align: center;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-weight: 700;
+    color: var(--primary-dark);
+    font-size: 1.05rem;
+  }
+
+  .idea-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .idea-card {
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    padding: 16px;
+  }
+  .idea-card.filled { border-style: solid; background: var(--surface-soft); }
+
+  .idea-slot-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .idea-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 0;
+  }
+
+  .idea-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+
+  .idea-field { margin-bottom: 8px; font-size: 0.88rem; }
+  .idea-field .k { color: var(--text-muted); font-size: 0.76rem; margin-bottom: 2px; }
+  .idea-field .v { white-space: pre-wrap; word-break: break-word; }
+
+  .idea-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ---- form ---- */
+
+  .form-field { margin-bottom: 14px; }
+  .form-field label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+  }
+  .form-field input, .form-field textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font: inherit;
+    background: var(--surface);
+    color: var(--text);
+    resize: vertical;
+  }
+  .form-field textarea { min-height: 72px; }
+  .form-field input:focus, .form-field textarea:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+  }
+
+  .form-actions { display: flex; gap: 10px; margin-top: 4px; }
+
+  .error-text { color: var(--danger); font-size: 0.82rem; margin-top: 8px; }
+
+  /* ---- teacher ---- */
+
+  .teacher-link {
+    display: block;
+    text-align: center;
+    margin-top: 28px;
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 26, 15, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 20;
+  }
+
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    max-width: 340px;
+    width: 100%;
+    box-shadow: var(--shadow);
+  }
+
+  .teacher-student {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .teacher-student summary {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    list-style: none;
+  }
+  .teacher-student summary::-webkit-details-marker { display: none; }
+  .teacher-student summary .arrow { margin-left: auto; color: var(--text-muted); transition: transform .15s ease; }
+  .teacher-student[open] summary .arrow { transform: rotate(90deg); }
+
+  .teacher-ideas { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .teacher-idea-empty { color: var(--text-muted); font-size: 0.85rem; font-style: italic; }
+
+  .loading, .empty-note {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 30px 0;
+    font-size: 0.9rem;
+  }
+
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <h1 class="brand"><span class="sprout">🌱</span> アイデア畑</h1>
+    <p class="subtitle">「ビジネス開発論」新入生向けアプリ アイデア投稿</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ホーム画面 -->
+  <section id="screen-home">
+    <div class="card">
+      <p class="section-title">👥 名簿</p>
+      <p class="section-desc">自分の名前をタップしてログインしてください。アイデアを3つ登録すると「課題コンプリート！」になります。</p>
+      <div class="summary-bar" id="summary-bar">読み込み中…</div>
+      <div class="roster-list" id="roster-list">
+        <div class="loading">名簿を読み込んでいます…</div>
+      </div>
+    </div>
+    <div class="teacher-link">
+      <button class="btn-text" id="open-teacher">教員用ログイン</button>
+    </div>
+  </section>
+
+  <!-- 学生画面 -->
+  <section id="screen-student" hidden>
+    <button class="back-link" id="student-back">← 名簿にもどる</button>
+    <div class="card">
+      <div class="student-head">
+        <span class="name" id="student-name"></span>
+        <span class="id" id="student-id"></span>
+      </div>
+      <p class="section-desc">アプリのアイデアを3つ登録しましょう。コンプリートするまでは、内容の修正・削除ができます。</p>
+      <div id="student-banner"></div>
+      <div class="idea-slots" id="idea-slots"></div>
+    </div>
+  </section>
+
+  <!-- 教員一覧画面 -->
+  <section id="screen-teacher" hidden>
+    <button class="back-link" id="teacher-back">← 名簿にもどる</button>
+    <div class="card">
+      <p class="section-title">🧑‍🏫 教員用 全員の一覧</p>
+      <div class="summary-bar" id="teacher-summary"></div>
+      <div id="teacher-list"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 教員パスワードモーダル -->
+<div class="modal-backdrop" id="teacher-modal" hidden>
+  <div class="modal">
+    <p class="section-title" style="margin-bottom:14px;">🔒 教員用ログイン</p>
+    <div class="form-field">
+      <label for="teacher-password">パスワード</label>
+      <input type="password" id="teacher-password" autocomplete="off">
+    </div>
+    <div class="error-text" id="teacher-error" hidden>パスワードが違います。</div>
+    <div class="form-actions" style="margin-top:14px;">
+      <button class="btn btn-primary" id="teacher-submit">ログイン</button>
+      <button class="btn btn-ghost" id="teacher-cancel">キャンセル</button>
+    </div>
+  </div>
+</div>
+
+<!-- アイデア編集フォームのテンプレート -->
+<template id="idea-form-template">
+  <div class="idea-form">
+    <div class="form-field">
+      <label>アプリの名称</label>
+      <input type="text" class="f-title" maxlength="60">
+    </div>
+    <div class="form-field">
+      <label>解消する新入生の悩み</label>
+      <textarea class="f-worry" maxlength="400"></textarea>
+    </div>
+    <div class="form-field">
+      <label>盛り込みたい主な機能や特徴</label>
+      <textarea class="f-features" maxlength="400"></textarea>
+    </div>
+    <div class="error-text f-error" hidden></div>
+    <div class="form-actions">
+      <button class="btn btn-primary f-save">保存する</button>
+      <button class="btn btn-ghost f-cancel">キャンセル</button>
+    </div>
+  </div>
+</template>
+
+<script>
+(function () {
+  'use strict';
+
+  // ★★★ Apps Script をデプロイしたら、下のURLを書き換えてください ★★★
+  var API_URL = 'https://script.google.com/macros/s/AKfycbyPOJW4BAIpBk8SPHVtJHID1jKcAhM1dtxwMHD2XOv16rNp_9sPdnFE-qa2t3BbAgN8/exec';
+
+  var STORAGE_KEY = 'ideahatake_student_id';
+  var TEACHER_KEY = 'ideahatake_teacher_pw';
+
+  var screens = {
+    home: document.getElementById('screen-home'),
+    student: document.getElementById('screen-student'),
+    teacher: document.getElementById('screen-teacher')
+  };
+
+  function showScreen(name) {
+    Object.keys(screens).forEach(function (k) {
+      screens[k].hidden = (k !== name);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  function apiGet(params) {
+    var qs = Object.keys(params)
+      .map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]); })
+      .join('&');
+    return fetch(API_URL + '?' + qs).then(function (r) { return r.json(); });
+  }
+
+  function apiPost(data) {
+    return fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(data)
+    }).then(function (r) { return r.json(); });
+  }
+
+  // ---------------- ホーム / 名簿 ----------------
+
+  function loadRoster() {
+    var list = document.getElementById('roster-list');
+    var summary = document.getElementById('summary-bar');
+    list.innerHTML = '<div class="loading">名簿を読み込んでいます…</div>';
+    apiGet({ action: 'roster' }).then(function (res) {
+      if (!res.ok) {
+        list.innerHTML = '<div class="empty-note">読み込みに失敗しました。時間をおいて再度お試しください。</div>';
+        return;
+      }
+      var roster = res.roster;
+      var completeCount = roster.filter(function (s) { return s.count >= 3; }).length;
+      summary.innerHTML = '<span>課題コンプリート</span><strong>' + completeCount + ' / ' + roster.length + '</strong>';
+
+      list.innerHTML = '';
+      roster.forEach(function (s) {
+        var row = document.createElement('button');
+        row.className = 'roster-row';
+        row.type = 'button';
+
+        var idSpan = document.createElement('span');
+        idSpan.className = 'roster-id';
+        idSpan.textContent = s.id;
+
+        var nameSpan = document.createElement('span');
+        nameSpan.className = 'roster-name';
+        nameSpan.textContent = s.name;
+
+        row.appendChild(idSpan);
+        row.appendChild(nameSpan);
+
+        if (s.count >= 3) {
+          var badge = document.createElement('span');
+          badge.className = 'badge-complete';
+          badge.textContent = '🌸 コンプリート！';
+          row.appendChild(badge);
+        } else {
+          var dots = document.createElement('span');
+          dots.className = 'dots';
+          for (var i = 0; i < 3; i++) {
+            var d = document.createElement('span');
+            d.className = 'dot' + (i < s.count ? ' filled' : '');
+            dots.appendChild(d);
+          }
+          row.appendChild(dots);
+          var count = document.createElement('span');
+          count.className = 'count-label';
+          count.textContent = s.count + '/3';
+          row.appendChild(count);
+        }
+
+        row.addEventListener('click', function () {
+          localStorage.setItem(STORAGE_KEY, s.id);
+          openStudent(s.id);
+        });
+
+        list.appendChild(row);
+      });
+    }).catch(function () {
+      list.innerHTML = '<div class="empty-note">通信エラーが発生しました。</div>';
+    });
+  }
+
+  // ---------------- 学生画面 ----------------
+
+  var currentStudentId = null;
+
+  function openStudent(studentId) {
+    currentStudentId = studentId;
+    showScreen('student');
+    renderStudent();
+  }
+
+  function renderStudent() {
+    var nameEl = document.getElementById('student-name');
+    var idEl = document.getElementById('student-id');
+    var bannerEl = document.getElementById('student-banner');
+    var slotsEl = document.getElementById('idea-slots');
+    slotsEl.innerHTML = '<div class="loading">読み込んでいます…</div>';
+
+    apiGet({ action: 'myIdeas', studentId: currentStudentId }).then(function (res) {
+      if (!res.ok) {
+        slotsEl.innerHTML = '<div class="empty-note">読み込みに失敗しました。</div>';
+        return;
+      }
+      nameEl.textContent = res.student.name;
+      idEl.textContent = res.student.id;
+
+      var count = res.count;
+      var complete = count >= 3;
+
+      bannerEl.innerHTML = '';
+      if (complete) {
+        var banner = document.createElement('div');
+        banner.className = 'complete-banner';
+        banner.textContent = '🌸 課題コンプリート！ 3つのアイデアを登録しました。';
+        bannerEl.appendChild(banner);
+      }
+
+      slotsEl.innerHTML = '';
+      res.ideas.forEach(function (idea) {
+        slotsEl.appendChild(renderIdeaCard(idea, complete));
+      });
+    }).catch(function () {
+      slotsEl.innerHTML = '<div class="empty-note">通信エラーが発生しました。</div>';
+    });
+  }
+
+  function renderIdeaCard(idea, locked) {
+    var card = document.createElement('div');
+    var hasContent = !!idea.title;
+    card.className = 'idea-card' + (hasContent ? ' filled' : '');
+
+    var label = document.createElement('div');
+    label.className = 'idea-slot-label';
+    label.textContent = 'アイデア ' + idea.slot;
+    card.appendChild(label);
+
+    if (hasContent) {
+      renderIdeaView(card, idea, locked);
+    } else if (locked) {
+      var emptyLocked = document.createElement('div');
+      emptyLocked.className = 'idea-empty';
+      emptyLocked.textContent = '—';
+      card.appendChild(emptyLocked);
+    } else {
+      renderAddButton(card, idea);
+    }
+
+    return card;
+  }
+
+  function renderIdeaView(card, idea, locked) {
+    var body = document.createElement('div');
+    body.className = 'idea-body';
+
+    var title = document.createElement('div');
+    title.className = 'idea-title';
+    title.textContent = idea.title;
+    body.appendChild(title);
+
+    body.appendChild(fieldBlock('解消する新入生の悩み', idea.worry));
+    body.appendChild(fieldBlock('盛り込みたい主な機能や特徴', idea.features));
+
+    if (!locked) {
+      var actions = document.createElement('div');
+      actions.className = 'idea-actions';
+
+      var editBtn = document.createElement('button');
+      editBtn.className = 'btn-text';
+      editBtn.textContent = '編集する';
+      editBtn.addEventListener('click', function () {
+        showEditForm(card, idea);
+      });
+
+      var delBtn = document.createElement('button');
+      delBtn.className = 'btn-danger';
+      delBtn.textContent = '削除する';
+      delBtn.addEventListener('click', function () {
+        if (!confirm('このアイデアを削除しますか？')) return;
+        apiPost({ action: 'deleteIdea', studentId: currentStudentId, slot: idea.slot }).then(function (res) {
+          if (res.ok) renderStudent();
+          else alert('削除できませんでした: ' + (res.error || ''));
+        });
+      });
+
+      actions.appendChild(editBtn);
+      actions.appendChild(delBtn);
+      body.appendChild(actions);
+    }
+
+    card.appendChild(body);
+  }
+
+  function fieldBlock(label, value) {
+    var f = document.createElement('div');
+    f.className = 'idea-field';
+    var k = document.createElement('div');
+    k.className = 'k';
+    k.textContent = label;
+    var v = document.createElement('div');
+    v.className = 'v';
+    v.textContent = value;
+    f.appendChild(k);
+    f.appendChild(v);
+    return f;
+  }
+
+  function renderAddButton(card, idea) {
+    var wrap = document.createElement('div');
+    wrap.className = 'idea-empty';
+    var btn = document.createElement('button');
+    btn.className = 'btn btn-ghost';
+    btn.textContent = '＋ アイデアを追加';
+    btn.addEventListener('click', function () {
+      showEditForm(card, idea);
+    });
+    wrap.appendChild(btn);
+    card.appendChild(wrap);
+  }
+
+  function showEditForm(card, idea) {
+    var label = card.querySelector('.idea-slot-label');
+    card.innerHTML = '';
+    card.appendChild(label);
+
+    var tpl = document.getElementById('idea-form-template');
+    var frag = tpl.content.cloneNode(true);
+    var formEl = frag.querySelector('.idea-form');
+    var titleInput = frag.querySelector('.f-title');
+    var worryInput = frag.querySelector('.f-worry');
+    var featuresInput = frag.querySelector('.f-features');
+    var errorEl = frag.querySelector('.f-error');
+    var saveBtn = frag.querySelector('.f-save');
+    var cancelBtn = frag.querySelector('.f-cancel');
+
+    titleInput.value = idea.title || '';
+    worryInput.value = idea.worry || '';
+    featuresInput.value = idea.features || '';
+
+    saveBtn.addEventListener('click', function () {
+      var title = titleInput.value.trim();
+      var worry = worryInput.value.trim();
+      var features = featuresInput.value.trim();
+      errorEl.hidden = true;
+
+      if (!title || !worry || !features) {
+        errorEl.textContent = 'すべての項目を入力してください。';
+        errorEl.hidden = false;
+        return;
+      }
+
+      saveBtn.disabled = true;
+      apiPost({
+        action: 'submitIdea',
+        studentId: currentStudentId,
+        slot: idea.slot,
+        title: title,
+        worry: worry,
+        features: features
+      }).then(function (res) {
+        if (res.ok) {
+          renderStudent();
+        } else {
+          errorEl.textContent = '保存できませんでした: ' + (res.error || '');
+          errorEl.hidden = false;
+          saveBtn.disabled = false;
+        }
+      });
+    });
+
+    cancelBtn.addEventListener('click', function () {
+      renderStudent();
+    });
+
+    card.appendChild(formEl);
+  }
+
+  // ---------------- 教員画面 ----------------
+
+  function openTeacherList(password) {
+    var listEl = document.getElementById('teacher-list');
+    var summaryEl = document.getElementById('teacher-summary');
+    showScreen('teacher');
+    listEl.innerHTML = '<div class="loading">読み込んでいます…</div>';
+
+    apiGet({ action: 'teacherList', password: password }).then(function (res) {
+      if (!res.ok) {
+        showScreen('home');
+        document.getElementById('teacher-error').hidden = false;
+        return;
+      }
+      localStorage.setItem(TEACHER_KEY, password);
+      var students = res.students;
+      var completeCount = students.filter(function (s) { return s.count >= 3; }).length;
+      summaryEl.innerHTML = '<span>課題コンプリート</span><strong>' + completeCount + ' / ' + students.length + '</strong>';
+
+      listEl.innerHTML = '';
+      students.forEach(function (s) {
+        var details = document.createElement('details');
+        details.className = 'teacher-student';
+
+        var summary = document.createElement('summary');
+        var idSpan = document.createElement('span');
+        idSpan.className = 'roster-id';
+        idSpan.textContent = s.id;
+        var nameSpan = document.createElement('span');
+        nameSpan.textContent = s.name;
+        var statusSpan = document.createElement('span');
+        statusSpan.style.marginLeft = 'auto';
+        statusSpan.style.fontSize = '0.8rem';
+        statusSpan.style.color = s.count >= 3 ? 'var(--accent)' : 'var(--text-muted)';
+        statusSpan.textContent = s.count >= 3 ? '🌸 コンプリート' : s.count + '/3';
+        var arrow = document.createElement('span');
+        arrow.className = 'arrow';
+        arrow.textContent = '›';
+
+        summary.appendChild(idSpan);
+        summary.appendChild(nameSpan);
+        summary.appendChild(statusSpan);
+        summary.appendChild(arrow);
+        details.appendChild(summary);
+
+        var ideasWrap = document.createElement('div');
+        ideasWrap.className = 'teacher-ideas';
+        var any = false;
+        s.ideas.forEach(function (idea, i) {
+          if (!idea) return;
+          any = true;
+          var box = document.createElement('div');
+          box.className = 'idea-card filled';
+          var lab = document.createElement('div');
+          lab.className = 'idea-slot-label';
+          lab.textContent = 'アイデア ' + (i + 1);
+          box.appendChild(lab);
+          var title = document.createElement('div');
+          title.className = 'idea-title';
+          title.textContent = idea.title;
+          box.appendChild(title);
+          box.appendChild(fieldBlock('解消する新入生の悩み', idea.worry));
+          box.appendChild(fieldBlock('盛り込みたい主な機能や特徴', idea.features));
+          ideasWrap.appendChild(box);
+        });
+        if (!any) {
+          var none = document.createElement('div');
+          none.className = 'teacher-idea-empty';
+          none.textContent = 'まだ投稿がありません。';
+          ideasWrap.appendChild(none);
+        }
+        details.appendChild(ideasWrap);
+        listEl.appendChild(details);
+      });
+    }).catch(function () {
+      listEl.innerHTML = '<div class="empty-note">通信エラーが発生しました。</div>';
+    });
+  }
+
+  // ---------------- 教員モーダル / ナビゲーション ----------------
+
+  var teacherModal = document.getElementById('teacher-modal');
+  var teacherPasswordInput = document.getElementById('teacher-password');
+  var teacherError = document.getElementById('teacher-error');
+
+  document.getElementById('open-teacher').addEventListener('click', function () {
+    teacherError.hidden = true;
+    teacherPasswordInput.value = '';
+    teacherModal.hidden = false;
+    teacherPasswordInput.focus();
+  });
+
+  document.getElementById('teacher-cancel').addEventListener('click', function () {
+    teacherModal.hidden = true;
+  });
+
+  function submitTeacherLogin() {
+    var pw = teacherPasswordInput.value;
+    if (!pw) return;
+    teacherModal.hidden = true;
+    openTeacherList(pw);
+  }
+
+  document.getElementById('teacher-submit').addEventListener('click', submitTeacherLogin);
+  teacherPasswordInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') submitTeacherLogin();
+  });
+
+  document.getElementById('student-back').addEventListener('click', function () {
+    localStorage.removeItem(STORAGE_KEY);
+    showScreen('home');
+    loadRoster();
+  });
+
+  document.getElementById('teacher-back').addEventListener('click', function () {
+    showScreen('home');
+    loadRoster();
+  });
+
+  // ---------------- 初期化 ----------------
+
+  loadRoster();
+
+  var savedId = localStorage.getItem(STORAGE_KEY);
+  if (savedId) {
+    openStudent(savedId);
+  }
+})();
+</script>
+
+</body>
+</html>
